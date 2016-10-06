@@ -1,6 +1,6 @@
   var map;
   // Create a new blank array for all the listing markers.
-  var largeInfowindow;
+  var infoWindow;
 
   var markers = [];
 
@@ -38,10 +38,10 @@ function initMap() {
     mapTypeControl: false
   });
 
-  largeInfowindow = new google.maps.InfoWindow();
-  var defaultIcon = makeMarkerIcon('0091ff');
+  infoWindow = new google.maps.InfoWindow();
+  var defaultIcon = createMarkerIcon('0091ff');
   //color change when user mouses over marker
-  var highlightedIcon = makeMarkerIcon('09871e');
+  var highlightedIcon = createMarkerIcon('09871e');
   // The following group uses the location array to create an array of markers on initialize.
   for (var i = 0; i < locations.length; i++) {
     // Get the position from the location array.
@@ -58,7 +58,7 @@ function initMap() {
     markers.push(marker);
     // Create an onclick event to open an infowindow at each marker.
     marker.addListener('click', function() {
-      populateInfoWindow(this, largeInfowindow);
+      loadInfoWindow(this, infoWindow);
     });
 // Two event listeners - one for mouseover, one for mouseout,
     // to change the colors back and forth.
@@ -70,13 +70,13 @@ function initMap() {
     });
   }
 
-  showListings();
+  displayMarker();
 
 }
 // This function populates the infowindow when the marker is clicked. We'll only allow
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
-function populateInfoWindow(marker, infowindow) {
+function loadInfoWindow(marker, infowindow) {
   // Check to make sure the infowindow is not already opened on this marker.
   // var $url: "https://api.foursquare.com/v2/venues/search";
   // var $contactNumb: 
@@ -91,7 +91,7 @@ function populateInfoWindow(marker, infowindow) {
   }
 }
 // This function will loop through the markers array and display them all.
-function showListings() {
+function displayMarker() {
   var bounds = new google.maps.LatLngBounds();
   // Extend the boundaries of the map for each marker and display the marker
   for (var i = 0; i < markers.length; i++) {
@@ -102,16 +102,10 @@ function showListings() {
 }
 
 
-// This function will loop through the listings and hide them all.
-function hideListings() {
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(null);
-  }
-}
 // This function takes in a COLOR, and then creates a new marker
       // icon of that color. The icon will be 21 px wide by 34 high, have an origin
       // of 0, 0 and be anchored at 10, 34).
-function makeMarkerIcon(markerColor) {
+function createMarkerIcon(markerColor) {
   var markerImage = new google.maps.MarkerImage(
     'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
     '|40|_|%E2%80%A2',
@@ -121,8 +115,6 @@ function makeMarkerIcon(markerColor) {
     new google.maps.Size(21,34));
   return markerImage;
 }
-
-
 
 var ViewModel = function() {
   var self= this;
@@ -151,8 +143,6 @@ var ViewModel = function() {
     });
   });
   
-
-
   this.itemClicked = function(itemText) {
     var index;
     for(var i=0; i<locations.length; i++) {
@@ -161,28 +151,27 @@ var ViewModel = function() {
       }
     }
 
-
     // function getFourSquare() {
-      var fourSquareUrl = "https://api.foursquare.com/v2/venues/search?ll=32.912365,-96.959327&limit=1&oauth_token=E0L0WENNP3BDOVJFQMPLCF0G0W0NTDUPTXHC15MYAB0BHAPH&v=20161005";
+      // var fourSquareUrl = "https://api.foursquare.com/v2/venues/search?ll="+lat+","+lng+"&limit=1&oauth_token=E0L0WENNP3BDOVJFQMPLCF0G0W0NTDUPTXHC15MYAB0BHAPH&v=20161005";
       // https://api.foursquare.com/v2/venues/search?ll=32.912365,-96.959327&limit=1&oauth_token=E0L0WENNP3BDOVJFQMPLCF0G0W0NTDUPTXHC15MYAB0BHAPH&v=20161005
 
 
       // "https://api.foursquare.com/v2/venues/search?ll="+lat+","+lng+",
-  $.getJSON(fourSquareUrl, function(data) {
-      console.log(data);
+  // $.getJSON(fourSquareUrl, function(data) {
+  //     console.log(data);
 
-    });
+  //   });
 
     function selectMarker(id) {
       $.each(markers, function() {
         if(this.id == id) {
           // largeInfowindow.close();
-          largeInfowindow.setContent('<div>' + this.title + '</div>');
-          largeInfowindow.open(map,this);
+          infoWindow.setContent('<div>' + this.title + '</div>');
+          infoWindow.open(map,this);
         }
 
-        largeInfowindow.addListener('closeclick', function() {
-          largeInfowindow.marker = null;
+        infoWindow.addListener('closeclick', function() {
+          infoWindow.marker = null;
         });
       });
     }
