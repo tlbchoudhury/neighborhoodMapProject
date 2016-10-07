@@ -1,5 +1,5 @@
 
-h1 {
+.title {
   color: #525454;
   font-size: 32px;
   margin: 10px 0 10px 0;
@@ -7,7 +7,7 @@ h1 {
 }
 #map {
   border: 1px solid;
-  height: 100vh;
+  height: 80vh;
 }
 .options-box {
   background: #FFDAB9;
@@ -16,23 +16,18 @@ h1 {
   text-align: left;
 }
 
-@media only screen and {max-width: 768px) {
-  .options-box {
-    height: 50vh;
-  }
-  
-  .col-sm-12
-    padding-bottom: 15px;
-  }
+@media only screen and (max-width: 800px) {
+  .title {
+    font-size: 20px;
 
-  #map {
-    height: 50vh;
-  } 
-}
-@media only screen and {min-width: 769px) {
- .options-box {
-    width: 33.33vh;
   }
-  #map {
-    width: 66.66vh;
+  .places {
+    font-size: 12px;
+  }
+    .options-box {
+      height: 35vh;
+    }
+    #map {
+      height: 60vh;
+    }
   }

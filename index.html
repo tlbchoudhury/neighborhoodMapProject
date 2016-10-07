@@ -8,13 +8,13 @@
 		<title>Restaurants in your Neighborhood</title>
 	</head>
 	<body>
-		<h1>Best Restaurants Around the Area</h1>
+		<h1 class="title">Best Restaurants Around the Area</h1>
 		<div class="container">
 			<div class="row">
 	    		<div class="col-md-4 col-sm-12 options-box">
 			        <input id="search-within-text" type="search" data-bind= "value: query, valueUpdate: 'keyup'"  placeholder="Type your search here" autocomplete="off"> 
 			        <ul data-bind="foreach: computedLocations">
-			        <h4> <li data-bind="text: title, click: $parent.itemClicked.bind()"></li></h4>
+			        <h4 class="places"> <li data-bind="text: title, click: $parent.itemClicked.bind()"></li></h4>
 			        </ul>
 	      		</div>
 	      		<div class="col-md-8 col-sm-12" id="map"></div>

@@ -193,6 +193,8 @@ var ViewModel = function() {
 
       if (this.id == id && showHide === false)
         this.setVisible(false);
+        infoWindow.close();
+
     });
   }
 }
