@@ -1,8 +1,20 @@
   var map;
-  // Create a new blank array for all the listing markers.
+
   var infoWindow;
 
   var markers = [];
+
+  var fourSquareContact;
+    function getFourSquare(lat, lng) {
+      var fourSquareUrl = "https://api.foursquare.com/v2/venues/search?ll="+lat+","+lng+"&limit=1&oauth_token=E0L0WENNP3BDOVJFQMPLCF0G0W0NTDUPTXHC15MYAB0BHAPH&v=20161005";
+
+      $.getJSON(fourSquareUrl, function(data) {
+         fourSquareContact= data.response.venues[0].contact.formattedPhone;
+         
+          }).fail(function(err) {
+            fourSquareContact="Failed to connect to FOURSQUARE";
+      });
+    }
 
   var locations = [
   {
@@ -30,38 +42,37 @@
     location: {lat: 32.942257, lng: -96.952823}
   }
   ];
-function initMap() {
-  // Constructor creates a new map - only center and zoom are required.
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 40.7413549, lng: -73.9980244},
-    zoom: 13,
-    mapTypeControl: false
-  });
+  function initMap() {
+    //Creates a new map 
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 40.7413549, lng: -73.9980244},
+      zoom: 13,
+      mapTypeControl: false
+    });
 
   infoWindow = new google.maps.InfoWindow();
   var defaultIcon = createMarkerIcon('0091ff');
-  //color change when user mouses over marker
+  //Color change when user mouses over marker
   var highlightedIcon = createMarkerIcon('09871e');
-  // The following group uses the location array to create an array of markers on initialize.
+  //Create an array of markers on initialize
   for (var i = 0; i < locations.length; i++) {
-    // Get the position from the location array.
+    //Get the position from the location array.
     var position = locations[i].location;
     var title = locations[i].title;
-    // Create a marker per location, and put into markers array.
+    //Create a marker for each location, and push them into markers array.
      var marker = new google.maps.Marker({
       position: position,
       title: title,
       animation: google.maps.Animation.DROP,
       id: i
     });
-    // Push the marker to our array of markers.
+    //Inserts marker into array of markers.
     markers.push(marker);
-    // Create an onclick event to open an infowindow at each marker.
+    //Open infowindow on click event 
     marker.addListener('click', function() {
       loadInfoWindow(this, infoWindow);
     });
-// Two event listeners - one for mouseover, one for mouseout,
-    // to change the colors back and forth.
+    // Event listeners to change marker color back and forth.
     marker.addListener('mouseover', function() {
       this.setIcon(highlightedIcon);
     });
@@ -71,26 +82,28 @@ function initMap() {
   }
 
   displayMarker();
-
 }
-// This function populates the infowindow when the marker is clicked. We'll only allow
-// one infowindow which will open at the marker that is clicked, and populate based
-// on that markers position.
+
+//Displays one infowindow when a marker is clicked with marker title and phone number from FOURSQUARE 
 function loadInfoWindow(marker, infowindow) {
-  // Check to make sure the infowindow is not already opened on this marker.
-  // var $url: "https://api.foursquare.com/v2/venues/search";
-  // var $contactNumb: 
+  // Check if the infowindow is open on this marker.
   if (infowindow.marker != marker) {
     infowindow.marker = marker;
-    infowindow.setContent('<div>' + marker.title + '</div>');
+    getFourSquare(marker.getPosition().lat(), marker.getPosition().lng());
+    
+    if(fourSquareContact == undefined) {
+      fourSquareContact="Failed to retrieve phone number from FOURSQUARE";
+    }
+
+    infowindow.setContent('<div>' + marker.title + " " + fourSquareContact +'</div>');
     infowindow.open(map, marker);
-    // Make sure the marker property is cleared if the infowindow is closed.
+    // close infowindow when the "x" is clicked on infowindow
     infowindow.addListener('closeclick', function() {
       infowindow.marker = null;
     });
   }
 }
-// This function will loop through the markers array and display them all.
+//This function loops through the markers array and displays them.
 function displayMarker() {
   var bounds = new google.maps.LatLngBounds();
   // Extend the boundaries of the map for each marker and display the marker
@@ -102,9 +115,8 @@ function displayMarker() {
 }
 
 
-// This function takes in a COLOR, and then creates a new marker
-      // icon of that color. The icon will be 21 px wide by 34 high, have an origin
-      // of 0, 0 and be anchored at 10, 34).
+//Gives color to marker icon. The icon is 21 px wide by 34 high, have an origin
+// of 0, 0 and be anchored at 10, 34).
 function createMarkerIcon(markerColor) {
   var markerImage = new google.maps.MarkerImage(
     'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
@@ -122,6 +134,7 @@ var ViewModel = function() {
   this.locations = ko.observableArray(locations),
   this.query = ko.observable(''),
 
+  //Filters location list and markers based on query in the search box
   this.computedLocations = ko.computed(function() {
     return ko.utils.arrayFilter(self.locations(), function(item) {
       var comparedResult= item.title.toLowerCase().indexOf(self.query().toLowerCase());
@@ -151,22 +164,17 @@ var ViewModel = function() {
       }
     }
 
-    // function getFourSquare() {
-      // var fourSquareUrl = "https://api.foursquare.com/v2/venues/search?ll="+lat+","+lng+"&limit=1&oauth_token=E0L0WENNP3BDOVJFQMPLCF0G0W0NTDUPTXHC15MYAB0BHAPH&v=20161005";
-      // https://api.foursquare.com/v2/venues/search?ll=32.912365,-96.959327&limit=1&oauth_token=E0L0WENNP3BDOVJFQMPLCF0G0W0NTDUPTXHC15MYAB0BHAPH&v=20161005
-
-
-      // "https://api.foursquare.com/v2/venues/search?ll="+lat+","+lng+",
-  // $.getJSON(fourSquareUrl, function(data) {
-  //     console.log(data);
-
-  //   });
-
+    //Displays infowindow for given marker id
     function selectMarker(id) {
       $.each(markers, function() {
         if(this.id == id) {
-          // largeInfowindow.close();
-          infoWindow.setContent('<div>' + this.title + '</div>');
+          getFourSquare(itemText.location.lat, itemText.location.lng);
+          //custom error message when formattedPhone is not returned by FOURSQUARE.
+          if(fourSquareContact == undefined) {
+            fourSquareContact="Failed to retrieve phone number from FOURSQUARE";
+         }
+
+          infoWindow.setContent('<div>' + this.title + " " + fourSquareContact +'</div>');
           infoWindow.open(map,this);
         }
 
@@ -177,7 +185,7 @@ var ViewModel = function() {
     }
     selectMarker(index);
   }
-
+  //Displays & hides marker based on marker id 
   function showHideMarker(id, showHide) {
     $.each(markers, function() {
       if (this.id == id && showHide === true)
