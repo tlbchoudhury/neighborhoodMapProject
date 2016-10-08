@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta charset="UTF-8">
-		<link href="css/style.css" rel="stylesheet">
-		<link href="css/bootstrap.min.css" rel="stylesheet">
-		<title>Restaurants in your Neighborhood</title>
-	</head>
-	<body>
-		<h1 class="title">Best Restaurants Around the Area</h1>
-		<div class="container">
-			<div class="row">
-	    		<div class="col-md-4 col-sm-12 options-box">
-			        <input id="search-within-text" type="search" data-bind= "value: query, valueUpdate: 'keyup'"  placeholder="Type your search here" autocomplete="off"> 
-			        <ul data-bind="foreach: computedLocations">
-			        <h4 class="places"> <li data-bind="text: title, click: $parent.itemClicked.bind()"></li></h4>
-			        </ul>
-	      		</div>
-	      		<div class="col-md-8 col-sm-12" id="map"></div>
-	      	</div>	
-    	</div>
-		<script src="js/libs/jquery.min.js"></script>
-		<script src="js/libs/knockout-3.2.0.js"></script>
-		<script src="js/script.js"></script>
-		<script async defer
-     		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4F22jriklsrjg7JX_wznxDg1tucEAfcs&v=3&callback=initMap">
-    	</script>
-	</body>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <title>Restaurants in your Neighborhood</title>
+</head>
+
+<body>
+    <h1 class="title">Best Restaurants Around the Area</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-sm-12 options-box">
+                <input id="search-within-text" type="search" data-bind="value: query, valueUpdate: 'keyup'" placeholder="Type your search here" autocomplete="off">
+                <ul data-bind="foreach: computedLocations">
+                    <li data-bind="text: title, click: $parent.itemClicked.bind()"></li>
+                </ul>
+            </div>
+            <div class="col-md-8 col-sm-12" id="map"></div>
+        </div>
+    </div>
+    <script src="js/libs/jquery.min.js"></script>
+    <script src="js/libs/knockout-3.2.0.js"></script>
+    <script src="js/script.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4F22jriklsrjg7JX_wznxDg1tucEAfcs&v=3&callback=initMap" onerror= "myErrorFunction()">
+    </script>
+</body>
 
 </html>

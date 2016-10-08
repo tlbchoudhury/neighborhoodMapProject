@@ -1,36 +1,45 @@
-
 .title {
-  color: #525454;
-  font-size: 32px;
-  margin: 10px 0 10px 0;
-  text-align: center;
+    color: #525454;
+    font-size: 32px;
+    margin: 10px 0 10px 0;
+    text-align: center;
 }
+
+li {
+    font-size: 1.5em;
+}
+
 #map {
-  border: 1px solid;
-  height: 80vh;
+    border: 1px solid;
+    height: 80vh;
 }
+
 .options-box {
-  background: #EEE8AA;
-  border: 1px solid;
-  line-height: 35px;
-  padding: 10px 10px 10px 10px;
-  text-align: left;
-  height: 80vh;
-
+    background: #EEE8AA;
+    border: 1px solid;
+    padding: 10px 10px 10px 10px;
+    text-align: left;
+    height: 60vh;
 }
 
-@media only screen and (max-width: 800px) {
-  .title {
-    font-size: 20px;
+@media only screen and (max-width: 768px) {
+    .title {
+        font-size: 20px;
+    }
 
-  }
-  .places {
-    font-size: 12px;
-  }
+    li {
+        font-size: 12px;
+    }
+
+    .search-within-text {
+        width: 10vw
+    }
+
     .options-box {
-      height: 35vh;
+        height: 30vh;
     }
+
     #map {
-      height: 60vh;
-    }
-  }
+        height: 70vh;
+    };
+}
