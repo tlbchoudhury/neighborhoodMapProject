@@ -276,10 +276,10 @@ function createMarkerIcon(markerColor) {
 }
 
 var ViewModel = function() {
-    var self = this;
+        var self = this;
 
-    this.locations = ko.observableArray(locations),
-        this.query = ko.observable(''),
+        self.locations = ko.observableArray(locations),
+        self.query = ko.observable(''),
 
         //Filters location list and markers based on query in the search box
         this.computedLocations = ko.computed(function() {
@@ -340,16 +340,17 @@ var ViewModel = function() {
                 });
             }
             selectMarker(index);
-        }
+        };
         //Displays & hides marker based on marker id 
     function showHideMarker(id, showHide) {
         $.each(markers, function() {
             if (this.id == id && showHide === true)
                 this.setVisible(true);
 
-            if (this.id == id && showHide === false)
+            if (this.id == id && showHide === false) {
                 this.setVisible(false);
-            infoWindow.close();
+                infoWindow.close();
+            }                
         });
     }
 }
