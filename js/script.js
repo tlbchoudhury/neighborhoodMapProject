@@ -28,11 +28,12 @@ function getFourSquare(lat, lng, marker, infowindow) {
             fourSquareContact = "Failed to retrieve phone number from FOURSQUARE";
         }
 
-        infowindow.setContent('<div>' + marker.title + " " + fourSquareContact + '</div>');
+        infowindow.setContent('<div>' + marker.title + ': '+'<br>' + fourSquareContact + '</div>');
         infowindow.open(map, marker);
-
     }).fail(function(err) {
         fourSquareContact = "Failed to connect to FOURSQUARE";
+        infowindow.setContent('<div>' + marker.title + ': '+'<br>' + fourSquareContact + '</div>');
+        infowindow.open(map, marker);
     });
 }
 
@@ -43,10 +44,10 @@ var locations = [{
         lng: -96.95809
     }
 }, {
-    title: 'Arabian Bites',
+    title: 'Starbucks',
     location: {
-        lat: 32.919733,
-        lng: -96.957101
+        lat: 32.918566,
+        lng: -96.959224
     }
 }, {
     title: 'Chipotle Mexican Grill',
